@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    pod-agent: maven-jdk8
+  namespace: devops-tools
+spec:
+  volumes:
+    - name: kubeconfig-token
+      secret:
+        secretName: kube-token
+        defaultMode: 0600
+    - name: maven-repo
+      persistentVolumeClaim:
+        claimName: cephfs-pvc
+        readOnly: false
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+  nodeSelector:
+    node-selector: minikube
+  containers:
+  - name: jnlp
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: jnlp
+  - name: maven
+    image: localhost:8082/nexus-docker/maven-jdk8:latest
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    command:
+    - sleep
+    args:
+    - 99d
+    volumeMounts:
+      - name: maven-repo
+        mountPath: /root/.m2
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: maven
+  - name: busybox
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    image: busybox
+    command:
+    - cat
+    tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: busybox
+  - name: helm
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    image: dtzar/helm-kubectl
+    command:
+    - sleep
+    args:
+    - 99d
+    env:
+    - name: KUBECONFIG
+      value:  /root/.kube/config
+    volumeMounts:
+      - name: kubeconfig-token
+        mountPath: /root/.kube
+  - name: docker
+    image: docker:latest
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: docker-sock
+        mountPath: /var/run/docker.sock
+    # env:
+    # - name: CONTAINER_ENV_VAR
+    #   value: busybox
