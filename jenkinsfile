@@ -1,3 +1,5 @@
+library 'default@master'
+
 pipeline {
   agent {
     kubernetes {
