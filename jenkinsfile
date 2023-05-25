@@ -3,6 +3,7 @@ pipeline {
     kubernetes {
       yamlFile 'KubernetesPod.yaml'
     }
+   }
     stages {
     stage('Init') {
       steps {
@@ -22,4 +23,3 @@ pipeline {
       }
     }
   }
-}  
