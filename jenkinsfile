@@ -29,7 +29,7 @@ pipeline {
             container('docker') {
               sh '''
               docker login http://localhost:8082 -uadmin -padmin
-              docker build -t http://localhost:8082/nexus-docker/maven:1 .
+              docker build -t localhost:8082/nexus-docker/maven:$BUILD_NUMBER -f Dockerfile .
               '''
             }
           }
