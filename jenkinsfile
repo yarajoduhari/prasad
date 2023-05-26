@@ -24,12 +24,13 @@ pipeline {
         }
         }
       }
-     stage('Building docker') {
+     stage('Building docker and pushing image to nexus') {
       steps {
             container('docker') {
               sh '''
               docker login http://localhost:8082 -uadmin -padmin
               docker build -t localhost:8082/nexus-docker/maven:$BUILD_NUMBER -f Dockerfile .
+              docker push localhost:8082/nexus-docker/maven:$BUILD_NUMBER
               '''
             }
           }
