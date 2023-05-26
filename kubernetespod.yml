@@ -12,7 +12,7 @@ spec:
         defaultMode: 0600
     - name: maven-repo
       persistentVolumeClaim:
-        claimName: cephfs-pvc
+        claimName: jenkins-pv-claim
         readOnly: false
     - name: docker-sock
       hostPath:
