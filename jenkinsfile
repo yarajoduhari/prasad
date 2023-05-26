@@ -24,5 +24,12 @@ pipeline {
         }
         }
       }
+     stage('Building docker') {
+      steps {
+            container('docker') {
+              sh 'docker login http://192.168.49.2:8081 -uadmin -padmin'
+            }
+          }
+        }
     }
   }
