@@ -27,8 +27,10 @@ pipeline {
      stage('Building docker') {
       steps {
             container('docker') {
-              sh 'docker login http://localhost:8082 -uadmin -padmin'
-              sh 'docker build -t http://localhost:8082/nexus-docker/maven:1 .
+              sh '''
+              docker login http://localhost:8082 -uadmin -padmin
+              docker build -t http://localhost:8082/nexus-docker/maven:1 .
+              '''
             }
           }
         }
