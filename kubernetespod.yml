@@ -17,8 +17,6 @@ spec:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
-  nodeSelector:
-    node-selector: minikube
   containers:
   - name: jnlp
     resources:
