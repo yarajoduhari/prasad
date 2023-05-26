@@ -6,10 +6,6 @@ metadata:
   namespace: devops-tools
 spec:
   volumes:
-    #- name: kubeconfig-token
-    #  secret:
-    #    secretName: kube-token
-    #    defaultMode: 0600
     - name: maven-repo
       persistentVolumeClaim:
         claimName: jenkins-pv-claim
