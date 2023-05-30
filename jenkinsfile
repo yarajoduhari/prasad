@@ -20,7 +20,12 @@ pipeline {
     stage('maven') {
       steps{
        container('maven') {
-        sh "mvn clean install"
+       configFileProvider([configFile(fileId: 'nb-maven-settings-xml', variable: 'MAVEN_SETTINGS_XML')]) {
+           ////Packing the jars
+        
+            sh '''
+            mvn -s $MAVEN_SETTINGS_XML clean install
+            '''
         }
         }
       }
