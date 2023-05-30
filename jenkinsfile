@@ -26,6 +26,7 @@ pipeline {
             sh '''
             mvn -s $MAVEN_SETTINGS_XML clean install
             '''
+            }
         }
         }
       }
