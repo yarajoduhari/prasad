@@ -8,7 +8,7 @@ spec:
   volumes:
     - name: kubeconfig-token
       secret:
-        secretName: kube-token
+        secretName: jenkins-admin-secret
         defaultMode: 0600
     - name: maven-repo
       persistentVolumeClaim:
