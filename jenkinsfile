@@ -20,13 +20,7 @@ pipeline {
     stage('maven') {
       steps{
        container('maven') {
-       configFileProvider([configFile(fileId: 'nb-maven-settings-xml', variable: 'MAVEN_SETTINGS_XML')]) {
-           ////Packing the jars
-        
-            sh '''
-            mvn -s $MAVEN_SETTINGS_XML clean install
-            '''
-            }
+           sh " mvn clean install "
         }
         }
       }
@@ -41,5 +35,15 @@ pipeline {
             }
           }
         }
+     stage('helm deploying') {
+      steps {
+            container('helm') {
+            sh '''
+             helm create kubernetes
+             cd kubernetes
+             helm install helm-kube . --create-namespace --namespace devops-tools --set image.repository=kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005
+             }
+        }
+      }
     }
   }
