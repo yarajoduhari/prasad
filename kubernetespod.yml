@@ -68,9 +68,9 @@ spec:
     - sleep
     args:
     - 99d
-   # env:
-   # - name: KUBECONFIG
-   #   value:  /root/.kube/config
+    env:
+    - name: KUBECONFIG
+      value:  /root/.kube/config
     volumeMounts:
       - name: kubeconfig-token
         mountPath: /root/.kube
