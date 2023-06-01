@@ -73,7 +73,7 @@ spec:
       value:  /Release.key
     volumeMounts:
       - name: kubeconfig-token
-        mountPath: /
+        mountPath: /Release.key
   - name: docker
     image: docker:latest
     resources:
