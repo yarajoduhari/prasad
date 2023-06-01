@@ -70,10 +70,10 @@ spec:
     - 99d
     env:
     - name: KUBECONFIG
-      value:  /root/.kube
+      value:  /
     volumeMounts:
       - name: kubeconfig-token
-        mountPath: /root/.kube
+        mountPath: /Release.key
   - name: docker
     image: docker:latest
     resources:
