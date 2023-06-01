@@ -38,6 +38,10 @@ pipeline {
      stage('helm deploying') {
       steps {
             container('helm') {
+            script {
+          git 'https://github.com/yarajoduhari/prasad.git'
+       
+          }
             sh '''
              helm create kubernetes
              cd kubernetes
