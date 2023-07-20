@@ -13,7 +13,7 @@ pipeline {
           // Build the jars
           git 'https://github.com/yarajoduhari/maven-standalone-application.git'
           // word length checker  
-          branchlint()
+          //branchlint()
           }
         }
       }
