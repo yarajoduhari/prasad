@@ -1,4 +1,4 @@
-library 'default@master'
+//library 'default@master'
 
 pipeline {
   agent {
