@@ -18,15 +18,15 @@ spec:
       hostPath:
         path: /var/run/docker.sock
   containers:
-  #- name: jnlp
-  #  resources:
-  #    requests:
-  #      ephemeral-storage: "2Gi"
-  #    limits:
-  #      ephemeral-storage: "3Gi"
-  #  env:
-  #  - name: CONTAINER_ENV_VAR
-  #    value: jnlp
+  - name: jnlp
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "3Gi"
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: jnlp
   - name: maven
     image: localhost:8082/nexus-docker/maven-jdk8:latest
     resources:
