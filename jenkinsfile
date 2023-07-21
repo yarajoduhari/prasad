@@ -49,7 +49,7 @@ pipeline {
              #helm install --help
              helm create jenkins-kube
     
-             helm install jenkins-kube jenkins-kube/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-local/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=80  
+             helm upgrade jenkins-kube jenkins-kube/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-local/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=80  
              echo http://$NODE_IP:$NODE_PORT 
              '''
             }
