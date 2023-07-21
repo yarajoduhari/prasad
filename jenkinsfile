@@ -49,7 +49,7 @@ pipeline {
              #helm install --help
              helm create kubernetes
     
-             helm install kubernetes kubernetes/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=80   
+             helm install kubernetes kubernetes/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005  
              echo http://$NODE_IP:$NODE_PORT 
              '''
             }
