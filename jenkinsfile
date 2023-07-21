@@ -44,10 +44,11 @@ pipeline {
           }
             sh '''
              helm repo add kubernetes  https://charts.bitnami.com/bitnami
+             helm repo update
              helm install --help
-             helm create kubernetes
+             #helm create kubernetes
     
-             helm install --create-namespace --namespace devops-tools --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005 kube-jenkins ./kubernetes
+             helm install -n devops-tools --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005 kubernetes/bitnami
              '''
             } 
         }
