@@ -45,7 +45,7 @@ pipeline {
             sh '''
              helm install --help
              helm create kubernetes
-             // cd kubernetes
+    
              helm install --create-namespace --namespace devops-tools --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set serviceAccount.create=false --set service.type=NodePort --set service.port=32005 kube-jenkins ./kubernetes
              '''
             } 
