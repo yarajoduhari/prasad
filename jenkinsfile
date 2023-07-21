@@ -49,7 +49,7 @@ pipeline {
              #helm install --help
              #helm create kubernetes
     
-             helm install -f values.yaml -f chart.yaml kub-jenkins-master kub-jenkins -n devops-tools --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005 
+             helm install -f values.yaml -f chart.yaml kub-jenkins-master ./kub-jenkins -n devops-tools --set image.repository=localhost:8082/kube-docker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=32005 
              '''
             } 
         }
