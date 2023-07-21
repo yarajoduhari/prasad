@@ -43,7 +43,7 @@ pipeline {
        
           }
             sh '''
-             helm repo add kubernetes  https://charts.bitnami.com/bitnami
+             helm repo add  bitnami  https://charts.bitnami.com/bitnami
              helm repo update
              helm repo ls
              helm install --help
