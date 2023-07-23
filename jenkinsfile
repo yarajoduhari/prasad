@@ -12,7 +12,7 @@ pipeline {
         script {
           // Build the jars
          // git 'https://github.com/yarajoduhari/maven-web-application.git'
-            git clone https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git
+            git 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
           // word length checker  
           //branchlint()
           }
@@ -22,7 +22,7 @@ pipeline {
       steps{
        container('maven') {
            sh '''
-           git clone https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git
+           git 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
             mvn clean install 
             '''
         }
