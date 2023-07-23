@@ -30,7 +30,7 @@ spec:
   - name: maven
     #image: localhost:8082/nexus-docker/maven-jdk8:latest
     #image: adoptopenjdk/maven-openjdk11:latest
-    image: aloislohnerit/maven-jdk17:latest
+    image: aloislohnerit/maven-jdk17:3.9.0
     resources:
       requests:
         ephemeral-storage: "2Gi"
