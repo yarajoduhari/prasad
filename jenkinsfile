@@ -11,8 +11,8 @@ pipeline {
       steps {
         script {
           // Build the jars
-         //git 'https://github.com/yarajoduhari/maven-web-application.git'
-            git branch: 'main', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
+         git 'https://github.com/yarajoduhari/maven-web-application.git'
+            //git branch: 'main', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
           // word length checker  
           //branchlint()
           }
@@ -21,7 +21,7 @@ pipeline {
     stage('maven') {
       steps{
        container('maven') {
-           sh "mvn clean install -DskipTests=true" 
+           sh "mvn clean install" 
             
         }
         }
@@ -32,8 +32,8 @@ pipeline {
               sh '''
               cd  devops
               docker login http://localhost:8082 -uadmin -padmin123
-              docker build -t localhost:8082/kube-tej/maven:$BUILD_NUMBER -f Dockerfile_blackbox .
-              docker push localhost:8082/kube-tej/maven:$BUILD_NUMBER
+              docker build -t localhost:8082/kube-local/maven:$BUILD_NUMBER -f Dockerfile_blackbox .
+              docker push localhost:8082/kube-local/maven:$BUILD_NUMBER
               '''
             }
           }
@@ -50,9 +50,9 @@ pipeline {
              #helm repo update
              #helm repo ls
              #helm install --help
-             helm create tejas
+             helm create jenkins-kube
     
-             helm install tejas tejas/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-tej/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=8081  
+             helm install jenkins-kube jenkins-kube/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-local/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=8080  
              echo http://$NODE_IP:$NODE_PORT 
              '''
             }
