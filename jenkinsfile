@@ -55,7 +55,7 @@ pipeline {
              #helm install --help
              helm create nobroker
     
-             helm install nobroker nobroker/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-nobroker/maven --set image.tag="${BUILD_NUMBER}" --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.momory=1000Mi --set service.type=NodePort --set service.port=8000  
+             helm upgrade nobroker nobroker/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-nobroker/maven --set image.tag="${BUILD_NUMBER}" --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.momory=1000Mi --set service.type=NodePort --set service.port=8000  
              echo http://$NODE_IP:$NODE_PORT 
              '''
             }
