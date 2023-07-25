@@ -11,28 +11,28 @@ pipeline {
       steps {
         script {
           // Build the jars
-         git 'https://github.com/yarajoduhari/maven-web-application.git'
+         git 'git credentialsId: 'bitbucket', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/ondc-integration.git'
             //git branch: 'main', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
           // word length checker  
           //branchlint()
           }
         }
       }
-    stage('maven') {
+   /* stage('maven') {
       steps{
        container('maven') {
            sh "mvn clean install" 
             
         }
         }
-      }
+      } */
      stage('Building docker and pushing image to nexus') {
       steps {
             container('docker') {
               sh '''
               cd  devops
               docker login http://localhost:8082 -uadmin -padmin123
-              docker build -t localhost:8082/kube-local/maven:$BUILD_NUMBER -f Dockerfile_blackbox .
+              docker build -t localhost:8082/kube-nobroker/maven:$BUILD_NUMBER -f devops/Dockerfile_blackbox .
               docker push localhost:8082/kube-local/maven:$BUILD_NUMBER
               '''
             }
@@ -50,9 +50,9 @@ pipeline {
              #helm repo update
              #helm repo ls
              #helm install --help
-             helm create jenkins-kube
+             helm create nobroker
     
-             helm install jenkins-kube jenkins-kube/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-local/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=8080  
+             helm install nobroker nobroker/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-nobroker/maven --set image.tag="${BUILD_NUMBER}" --set service.type=NodePort --set service.port=8000  
              echo http://$NODE_IP:$NODE_PORT 
              '''
             }
