@@ -32,7 +32,7 @@ pipeline {
               sh '''
               cd  devops
               docker login http://localhost:8082 -uadmin -padmin123
-              docker build -t localhost:8082/kube-nobroker/maven:$BUILD_NUMBER -f ondc-integration/devops/Dockerfile_blackbox .
+              docker build -t localhost:8082/kube-nobroker/maven:$BUILD_NUMBER -f Dockerfile_blackbox .
               docker push localhost:8082/kube-local/maven:$BUILD_NUMBER
               '''
             }
