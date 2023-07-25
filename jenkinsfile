@@ -11,7 +11,7 @@ pipeline {
       steps {
         script {
           // Build the jars
-         git 'git credentialsId: 'bitbucket', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/ondc-integration.git'
+         'git credentialsId: 'bitbucket', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/ondc-integration.git'
             //git branch: 'main', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
           // word length checker  
           //branchlint()
