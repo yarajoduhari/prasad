@@ -18,7 +18,7 @@ pipeline {
         }
       }
     }
-    stage('maven') {
+    /*stage('maven') {
       steps{
        container('maven') {
            configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
@@ -28,7 +28,7 @@ pipeline {
             
         }
         }
-      } 
+      } */
      stage('Building docker and pushing image to nexus') {
       steps {
             container('docker') {
