@@ -23,7 +23,7 @@ pipeline {
        container('maven') {
            configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
            sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -DskipTests"
-           sh "cp web/target/*.jar devops/."
+           sh "cp target/*.jar devops/."
         } 
             
         }
