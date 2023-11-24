@@ -1,4 +1,8 @@
 //library 'default@master'
+def jobnameparts = JOB_NAME.tokenize('/') as String[]
+def project_name = jobnameparts[0]
+def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+def userName =  cause.userId[0]
 
 pipeline {
   agent {
@@ -22,8 +26,8 @@ pipeline {
       steps{
        container('maven') {
            configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
-           sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -DskipTests"
-           sh "cp uniview-server/target/*.jar devops/."
+           sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox"
+           sh "cp target/sarthi-*.jar devops/."
         } 
             
         }
@@ -55,7 +59,7 @@ pipeline {
              #helm install --help
              helm create sarthi
     
-             helm upgrade sarthi sarthi/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-nobroker/maven --set image.tag="${BUILD_NUMBER}" --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.momory=1000Mi --set service.type=LoadBalancer --set service.port=8000 --set ingress.enabled=true --set ingress.annotations.kubernetes.io/ingress.class:traefik  --set ingress.annotations.traefik.ingress.kubernetes.io/router.entrypoints:websecure --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls:"true" --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver:letsencrypt --set ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares:traefik-star-ipwhitelist@kubernetescrd 
+             helm upgrade sarthi sarthi/ -n devops-tools --set serviceAccount.create=false --set serviceAccount.name=jenkins-admin --set image.repository=localhost:8082/kube-nobroker/maven --set image.tag="${BUILD_NUMBER}" --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.momory=1000Mi --set service.type=LoadBalancer --set service.port=8000 --set ingress.enabled=true --set ingress.annotations.kubernetes.io/ingress.class:traefik  --set ingress.annotations.traefik.ingress.kubernetes.io/router.entrypoints:websecure --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls:"true" --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver:letsencrypt --set ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares:traefik-star-ipwhitelist@kubernetescrd --set ingress.hosts[0].host="${BRANCH_NAME}.${PROJECT_NAME}.localserver.localtesting.com,ingress.hosts[0].paths[0].path=,ingress.hosts[0].paths[0].pathType=ImplementationSpecific" 
  
              echo http://$NODE_IP:$NODE_PORT 
              '''
