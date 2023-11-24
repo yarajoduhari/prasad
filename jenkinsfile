@@ -26,7 +26,7 @@ pipeline {
       steps{
        container('maven') {
            configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
-           sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox"
+           sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox -U -DskipTests=true"
            sh "cp target/sarthi-*.jar devops/."
         } 
             
