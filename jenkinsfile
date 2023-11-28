@@ -48,10 +48,10 @@ pipeline {
      stage('helm deploying') {
       steps {
             container('helm') {
-            script {
-          git 'https://github.com/yarajoduhari/prasad.git'
+            #script {
+          #git 'https://github.com/yarajoduhari/prasad.git'
        
-          }
+          #}
             sh '''
              #helm repo add  bitnami  https://charts.bitnami.com/bitnami
              #helm repo update
