@@ -49,10 +49,10 @@ pipeline {
       steps {
             container('helm') {
             sh '''
-             // helm repo add  bitnami  https://charts.bitnami.com/bitnami
-             // helm repo update
-             // helm repo ls
-             // helm install --help
+             # helm repo add  bitnami  https://charts.bitnami.com/bitnami
+             # helm repo update
+             # helm repo ls
+             # helm install --help
              helm create sarthi
              cd sarthi
              sed '/annotations: {}$/d' values.yaml > values.yaml
