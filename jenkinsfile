@@ -66,7 +66,7 @@ pipeline {
   --set 'serviceAccount.create=false' \
   --set 'serviceAccount.name=jenkins-admin' \
   --set 'image.repository=localhost:8082/kube-sarthi/maven' \
-  --set 'image.tag=21' \
+  --set "image.tag=${BUILD_NUMBER}" \
   --set 'service.port=8080' \
   --set 'resources.limits.cpu=300m' \
   --set 'resources.limits.memory=2000Mi' \
