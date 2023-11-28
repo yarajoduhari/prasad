@@ -77,9 +77,7 @@ pipeline {
   --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.tls=true' \
   --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver=letsencrypt' \
   --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares=traefik-star-ipwhitelist@kubernetescrd' \
-  --set 'ingress.hosts.host=sarthi.localserver.localtesting.com' \
-  --set 'ingress.hosts.paths.path=""' \
-  --set 'ingress.hosts.paths.pathType=ImplementationSpecific'  --debug
+  --set 'ingress.hosts.host=sarthi.localserver.localtesting.com'   --debug
 
 
              echo http://$NODE_IP:$NODE_PORT 
