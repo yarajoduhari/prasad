@@ -71,13 +71,7 @@ pipeline {
   --set 'resources.requests.cpu=200m' \
   --set 'resources.requests.memory=1000Mi' \
   --set 'service.type=LoadBalancer' \
-  --set 'ingress.enabled=true' \
-  --set 'ingress.annotations.kubernetes.io/ingress.class=traefik' \
-  --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.entrypoints=websecure' \
-  --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.tls=true' \
-  --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver=letsencrypt' \
-  --set 'ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares=traefik-star-ipwhitelist@kubernetescrd' \
-  --set 'ingress.hosts.host=sarthi.localserver.localtesting.com'   --debug
+  --set 'ingress.enabled=true'    --debug
 
 
              echo http://$NODE_IP:$NODE_PORT 
