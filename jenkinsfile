@@ -70,12 +70,12 @@ pipeline {
   --set 'resources.requests.memory=1000Mi' \
   --set 'service.type=LoadBalancer' \
   --set 'ingress.enabled=true' \
- --set 'ingress.annotations."kubernetes.io/ingress.class=traefik"' \
- --set 'ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints=websecure"' \
- --set 'ingress.annotations."traefik.ingress.kubernetes.io/router.tls=true"' \
- --set 'ingress.annotations."traefik.ingress.kubernetes.io/router.tls.certresolver=letsencrypt"' \
- --set 'ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares=traefik-star-ipwhitelist@kubernetescrd"' \
- --set 'ingress."hosts[0].host=sarthi.localserver.localtesting.com"' \
+ --set ingress.annotations."kubernetes.io/ingress.class"=traefik \
+ --set ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints"=websecure \
+ --set ingress.annotations."traefik.ingress.kubernetes.io/router.tls"=true \
+ --set ingress.annotations."traefik.ingress.kubernetes.io/router.tls.certresolver"=letsencrypt \
+ --set ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares"=traefik-star-ipwhitelist@kubernetescrd \
+ --set 'ingress.hosts[0].host=sarthi.localserver.localtesting.com' \
   --debug
 
 
