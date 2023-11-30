@@ -48,7 +48,7 @@ pipeline {
      stage('helm deploying') {
       steps {
             script {
-          git clone https://github.com/yarajoduhari/prasad.git
+          git 'https://github.com/yarajoduhari/prasad.git'
         }
             container('helm') {
             sh '''
