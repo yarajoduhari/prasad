@@ -47,6 +47,9 @@ pipeline {
         }
      stage('helm deploying') {
       steps {
+            script {
+          git clone https://github.com/yarajoduhari/prasad.git
+        }
             container('helm') {
             sh '''
              # helm repo add  bitnami  https://charts.bitnami.com/bitnami
@@ -54,6 +57,8 @@ pipeline {
              # helm repo ls
              # helm install --help
              helm create sarthi-local
+               mv  sarthi-local/values.yaml sarthi-local/values1.yaml
+              cp values.yaml sarthi-local/
              
              #helm upgrade sarthi-local sarthi-local/ -n devops-tools --set image.repository=localhost:8082/kube-sarthi/maven --set image.tag=${BUILD_NUMBER} --set service.port=8080 --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.memory=1000Mi  --set service.type=LoadBalancer --set ingress.enabled=true --set ingress.annotations.kubernetes.io/ingress.class=traefik  --set ingress.annotations.traefik.ingress.kubernetes.io/router.entrypoints=websecure --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls=true --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver=letsencrypt --set ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares=traefik-star-ipwhitelist@kubernetescrd --set ingress.hosts[0].host=sarthi.localserver.localtesting.com,ingress.hosts[0].paths[0].path=,ingress.hosts[0].paths[0].pathType=ImplementationSpecific  
 
@@ -69,13 +74,6 @@ pipeline {
   --set 'resources.requests.cpu=200m' \
   --set 'resources.requests.memory=1000Mi' \
   --set 'service.type=LoadBalancer' \
-  --set 'ingress.enabled=true' \
- --set ingress.annotations."kubernetes.io/ingress.class"=traefik \
- --set ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints"=websecure \
- --set ingress.annotations."traefik.ingress.kubernetes.io/router.tls"=true \
- --set ingress.annotations."traefik.ingress.kubernetes.io/router.tls.certresolver"=letsencrypt \
- --set ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares"=traefik-star-ipwhitelist@kubernetescrd \
- --set 'ingress.hosts[0].host=sarthi.localserver.localtesting.com' \
   --debug
 
 
