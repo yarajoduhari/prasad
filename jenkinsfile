@@ -2,84 +2,80 @@
 def jobnameparts = JOB_NAME.tokenize('/') as String[]
 def project_name = jobnameparts[0]
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
-def userName =  cause.userId[0]
+def userName = cause.userId[0]
 
 pipeline {
   agent {
     kubernetes {
       yamlFile 'kubernetespod.yml'
     }
-   }
-    stages {
+  }
+  stages {
     stage('Init') {
       steps {
         script {
           // Build the jars
-         git branch: 'master', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
+          git branch: 'master', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
           // word length checker  
           //branchlint()
         }
       }
     }
-    stage('maven') {
-      steps{
-       container('maven') {
-           //configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
-           sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox -U -DskipTests=true"
-           sh "cp target/*.jar devops/."
+    stage('Maven') {
+      steps {
+        container('maven') {
+          // Uncomment if using Maven settings
+          // configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
+          sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox -U -DskipTests=true"
+          sh "cp target/*.jar devops/."
         } 
-            
-        }
-        }
-      } 
-     stage('Building docker and pushing image to nexus') {
+      }
+    }
+    stage('Building Docker and Pushing Image to Nexus') {
       steps {
-            container('docker') {
-              sh '''
-              cd  devops
-              //docker login http://localhost:8082 -uadmin -padmin123
-              docker build -t localhost:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
-              docker push localhost:8082/kube-test/maven:$BUILD_NUMBER
-              '''
-            }
-          }
-        }
-     stage('helm deploying') {
-      steps {
-            script {
-          git 'https://github.com/yarajoduhari/prasad.git'
-        }
-            container('helm') {
-            sh '''
-             # helm repo add  bitnami  https://charts.bitnami.com/bitnami
-             # helm repo update
-             # helm repo ls
-             # helm install --help
-             helm create sarthi-local
-               mv  sarthi-local/values.yaml sarthi-local/values1.yaml
-              cp values.yaml sarthi-local/
-             
-             #helm upgrade sarthi-local sarthi-local/ -n devops-tools --set image.repository=localhost:8082/kube-sarthi/maven --set image.tag=${BUILD_NUMBER} --set service.port=8080 --set resources.limits.cpu=300m --set resources.limits.memory=2000Mi --set resources.requests.cpu=200m --set resoureces.requests.memory=1000Mi  --set service.type=LoadBalancer --set ingress.enabled=true --set ingress.annotations.kubernetes.io/ingress.class=traefik  --set ingress.annotations.traefik.ingress.kubernetes.io/router.entrypoints=websecure --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls=true --set ingress.annotations.traefik.ingress.kubernetes.io/router.tls.certresolver=letsencrypt --set ingress.annotations.traefik.ingress.kubernetes.io/router.middlewares=traefik-star-ipwhitelist@kubernetescrd --set ingress.hosts[0].host=sarthi.localserver.localtesting.com,ingress.hosts[0].paths[0].path=,ingress.hosts[0].paths[0].pathType=ImplementationSpecific  
-
-              
-              helm upgrade sarthi-local sarthi-local/ -n devops-tools \
-  --set 'serviceAccount.create=false' \
-  --set 'serviceAccount.name= default' \
-  --set 'image.repository=localhost:8082/kube-sarthi/maven' \
-  --set "image.tag=${BUILD_NUMBER}" \
-  --set 'service.port=8080' \
-  --set 'resources.limits.cpu=300m' \
-  --set 'resources.limits.memory=2000Mi' \
-  --set 'resources.requests.cpu=200m' \
-  --set 'resources.requests.memory=1000Mi' \
-  --set 'service.type=LoadBalancer' \
-  --debug
-
-
-             echo http://$NODE_IP:$NODE_PORT 
-             '''
-            }
+        container('docker') {
+          sh '''
+            cd devops
+            # Uncomment if using Docker login
+            # docker login http://localhost:8082 -u admin -p admin123
+            docker build -t localhost:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
+            docker push localhost:8082/kube-test/maven:$BUILD_NUMBER
+          '''
         }
       }
     }
-}
+    stage('Helm Deploying') {
+      steps {
+        script {
+          git 'https://github.com/yarajoduhari/prasad.git'
+        }
+        container('helm') {
+          sh '''
+            # helm repo add bitnami https://charts.bitnami.com/bitnami
+            # helm repo update
+            # helm repo ls
+            # helm install --help
+            helm create sarthi-local
+            mv sarthi-local/values.yaml sarthi-local/values1.yaml
+            cp values.yaml sarthi-local/
+            
+            helm upgrade sarthi-local sarthi-local/ -n devops-tools \
+              --set 'serviceAccount.create=false' \
+              --set 'serviceAccount.name=default' \
+              --set 'image.repository=localhost:8082/kube-sarthi/maven' \
+              --set "image.tag=${BUILD_NUMBER}" \
+              --set 'service.port=8080' \
+              --set 'resources.limits.cpu=300m' \
+              --set 'resources.limits.memory=2000Mi' \
+              --set 'resources.requests.cpu=200m' \
+              --set 'resources.requests.memory=1000Mi' \
+              --set 'service.type=LoadBalancer' \
+              --debug
+
+            echo http://$NODE_IP:$NODE_PORT 
+          '''
+        }
+      }
+    }
+  } // Closing the stages block
+} // Closing the pipeline block
