@@ -55,21 +55,21 @@ pipeline {
             # helm repo update
             # helm repo ls
             # helm install --help
-            helm create sarthi-local
-            mv sarthi-local/values.yaml sarthi-local/values1.yaml
-            cp values.yaml sarthi-local/
+            helm create local-test
+            mv local-test/values.yaml local-test/values1.yaml
+            cp values.yaml local-test/
             
-            helm upgrade sarthi-local sarthi-local/ -n devops-tools \
+            helm upgrade local-test local-test/ -n devops-tools \
               --set 'serviceAccount.create=false' \
               --set 'serviceAccount.name=default' \
-              --set 'image.repository=localhost:8082/kube-sarthi/maven' \
+              --set 'image.repository=localhost:8082/kube-test/maven' \
               --set "image.tag=${BUILD_NUMBER}" \
               --set 'service.port=8080' \
               --set 'resources.limits.cpu=300m' \
               --set 'resources.limits.memory=2000Mi' \
               --set 'resources.requests.cpu=200m' \
               --set 'resources.requests.memory=1000Mi' \
-              --set 'service.type=LoadBalancer' \
+              --set 'service.type=NodePort' \
               --debug
 
             echo http://$NODE_IP:$NODE_PORT 
