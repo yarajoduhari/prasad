@@ -15,8 +15,7 @@ pipeline {
       steps {
         script {
           // Build the jars
-         git branch: 'star', credentialsId: 'bitbucket', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/sarthi.git' 
-            //git branch: 'main', url: 'https://YHariPrasad@bitbucket.org/nobroker-repos/tejas.git'
+         git branch: 'star', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
           // word length checker  
           //branchlint()
         }
@@ -25,9 +24,9 @@ pipeline {
     stage('maven') {
       steps{
        container('maven') {
-           configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
+           //configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
            sh "mvn -T 3C -s $MAVEN_SETTINGS_XML clean install -Denv=blackbox -U -DskipTests=true"
-           sh "cp target/sarthi-*.jar devops/."
+           sh "cp target/*.jar devops/."
         } 
             
         }
@@ -38,9 +37,9 @@ pipeline {
             container('docker') {
               sh '''
               cd  devops
-              docker login http://localhost:8082 -uadmin -padmin123
-              docker build -t localhost:8082/kube-sarthi/maven:$BUILD_NUMBER -f Dockerfile_blackbox .
-              docker push localhost:8082/kube-sarthi/maven:$BUILD_NUMBER
+              //docker login http://localhost:8082 -uadmin -padmin123
+              docker build -t localhost:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
+              docker push localhost:8082/kube-test/maven:$BUILD_NUMBER
               '''
             }
           }
