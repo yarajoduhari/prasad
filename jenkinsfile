@@ -15,7 +15,7 @@ pipeline {
       steps {
         script {
           // Build the jars
-          git branch: 'master', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
+          git branch: 'master', url: 'https://github.com/MithunTechnologiesDevOps/maven-standalone-application.git'
           // word length checker  
           //branchlint()
         }
@@ -27,7 +27,7 @@ pipeline {
           // Uncomment if using Maven settings
           // configFileProvider([configFile(fileId: 'nb-settings.xml', variable: 'MAVEN_SETTINGS_XML')]) {
           sh "mvn clean install -Denv=blackbox -U -DskipTests=true"
-          sh "cp target/*.war ."
+          sh "cp target/*.jar ."
         } 
       }
     }
