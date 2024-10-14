@@ -37,7 +37,7 @@ pipeline {
           sh '''
             # cd devops
             # Uncomment if using Docker login
-            # docker login http://localhost:8082 -u admin -p admin123
+            docker login http://localhost:8082 -u admin -p admin123
             docker build -t localhost:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
             docker push localhost:8082/kube-test/maven:$BUILD_NUMBER
           '''
