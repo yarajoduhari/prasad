@@ -69,7 +69,7 @@ pipeline {
               --set 'resources.limits.memory=2000Mi' \
               --set 'resources.requests.cpu=200m' \
               --set 'resources.requests.memory=1000Mi' \
-              --set 'service.type=NodePort' \
+              --set 'service.type=LoadBalancer' \
               --debug
 
             echo http://$NODE_IP:$NODE_PORT 
