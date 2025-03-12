@@ -37,9 +37,9 @@ pipeline {
           sh '''
             # cd devops
             # Uncomment if using Docker login
-            docker login http://localhost:8082 -u admin -p admin123
-            docker build -t localhost:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
-            docker push localhost:8082/kube-test/maven:$BUILD_NUMBER
+            docker login http://192.168.49.242:8082 -u admin -p admin123
+            docker build -t 192.168.49.242:8082/kube-test/maven:$BUILD_NUMBER -f Dockerfile .
+            docker push 192.168.49.242:8082/kube-test/maven:$BUILD_NUMBER
           '''
         }
       }
@@ -62,7 +62,7 @@ pipeline {
             helm upgrade local-test local-test/ -n devops-tools \
               --set 'serviceAccount.create=false' \
               --set 'serviceAccount.name=default' \
-              --set 'image.repository=localhost:8082/kube-test/maven' \
+              --set 'image.repository=192.168.49.242:8082/kube-test/maven' \
               --set "image.tag=${BUILD_NUMBER}" \
               --set 'service.port=8080' \
               --set 'resources.limits.cpu=300m' \
