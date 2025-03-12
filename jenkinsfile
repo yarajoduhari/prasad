@@ -59,7 +59,7 @@ pipeline {
             mv local-test/values.yaml local-test/values1.yaml
             cp values.yaml local-test/
             
-            helm upgrade local-test local-test/ -n devops-tools \
+            helm update local-test local-test/ -n devops-tools \
               --set 'serviceAccount.create=false' \
               --set 'serviceAccount.name=default' \
               --set 'image.repository=192.168.49.242:8082/kube-test/maven' \
